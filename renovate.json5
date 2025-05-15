@@ -1,0 +1,121 @@
+
+{
+  // https://docs.renovatebot.com/config-overview/#extends
+  extends: [
+    // https://docs.renovatebot.com/presets-config/#configbest-practices
+    "config:best-practices",
+
+    // https://docs.renovatebot.com/presets-default/#dependencydashboard
+    ":dependencyDashboard",
+    // https://docs.renovatebot.com/presets-default/#enableprecommit
+    ":enablePreCommit",
+    // https://docs.renovatebot.com/presets-default/#enablevulnerabilityalerts
+    ":enableVulnerabilityAlerts",
+    // https://docs.renovatebot.com/presets-default/#rebasestaleprs
+    ":rebaseStalePrs",
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#rangestrategy
+  rangeStrategy: "update-lockfile",
+
+  // https://docs.renovatebot.com/configuration-options/#reviewersfromcodeowners
+  reviewersFromCodeOwners: true,
+
+  // https://docs.renovatebot.com/configuration-options/#automerge
+  automerge: true,
+
+  // https://docs.renovatebot.com/configuration-options/#separatemajorminor
+  separateMajorMinor: false,
+
+  // https://docs.renovatebot.com/configuration-options/#separatemultiplemajor
+  separateMultipleMajor: false,
+
+  // https://docs.renovatebot.com/configuration-options/#prhourlylimit
+  prHourlyLimit: 0,
+
+  // https://docs.renovatebot.com/configuration-options/#addlabels
+  addLabels: [
+    "automated-pr"
+  ],
+
+  // https://docs.renovatebot.com/configuration-options/#commitmessageprefix
+  commitMessagePrefix: "[automated-commit]",
+
+  // https://docs.renovatebot.com/configuration-options/#packagerules
+  // Schedules docs
+  // https://docs.renovatebot.com/configuration-options/#schedule
+  packageRules: [
+    {
+      groupName: "python dependencies",
+      groupSlug: "python",
+      description: "Update python dependencies",
+      automerge: false,
+      matchFileNames: [
+        "pyproject.toml",
+        "uv.lock"
+      ],
+      matchPackageNames: [
+        "*"
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21-23_*_*_2
+        "* 20-23 * * 2"
+      ],
+    },
+    {
+      groupName: "Github Actions dependencies",
+      groupSlug: "github-actions",
+      description: "Update github action dependencies",
+      automerge: true,
+      matchFileNames: [
+        "/.github/workflows",
+        "/.github/actions/**/"
+      ],
+      matchPackageNames: [
+        "*"
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_1_*_*
+        "* 20-23 1 * *"
+      ]
+    },
+    {
+      groupName: "pre-commit hooks",
+      groupSlug: "pre-commit",
+      description: "Update pre-commit hooks",
+      automerge: true,
+      matchFileNames: [
+        ".pre-commit-config.yaml",
+      ],
+      matchPackageNames: [
+        "*"
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_1_*_*
+        "* 20-23 1 * *"
+      ]
+    },
+    {
+      groupName: "Dockerfile",
+      groupSlug: "dockerfile",
+      description: "Update dockerfile",
+      automerge: false,
+      matchFileNames: [
+        "ci/docker/Dockerfile",
+      ],
+      matchPackageNames: [
+        "*"
+      ],
+      schedule: [
+        // https://crontab.guru/#*_21_1_*_*
+        "* 20-23 1 * *"
+      ]
+    },
+    {
+      groupName: "Ignored",
+      matchPackageNames: [
+      ],
+      enabled: false
+    }
+  ]
+}
